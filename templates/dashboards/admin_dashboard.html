@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard · ExchangeIt{% endblock %}
+{% block content %}
+<h1 class="text-title" style="margin:0 0 var(--spacing-lg);">Admin Dashboard</h1>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--spacing-lg);margin-bottom:var(--spacing-xl);">
+  <div class="card-dark">
+    <div class="text-muted" style="margin-bottom:var(--spacing-xs);">Total Users</div>
+    <div class="text-number" style="font-size:24px;">—</div>
+  </div>
+  <div class="card-dark">
+    <div class="text-muted" style="margin-bottom:var(--spacing-xs);">System Status</div>
+    <div class="text-number" style="font-size:24px;color:var(--color-trading-up);">Active</div>
+  </div>
+</div>
+<a href="/admin/" class="btn-secondary">Open Django Admin</a>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Log In · ExchangeIt{% endblock %}
+{% block content %}
+<div style="display:flex;justify-content:center;align-items:center;min-height:60vh;">
+  <div class="card-dark" style="width:100%;max-width:420px;">
+    <h1 class="text-title" style="margin:0 0 var(--spacing-lg);">Log In</h1>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="id_email">Email</label>
+        <input class="input-dark" type="email" name="email" id="id_email" value="{{ form.email.value|default:'' }}" required>
+        {% if form.email.errors %}<div style="color:var(--color-trading-down);margin-top:4px;font-size:13px;">{{ form.email.errors|striptags }}</div>{% endif %}
+      </div>
+      <div class="form-group">
+        <label for="id_password">Password</label>
+        <input class="input-dark" type="password" name="password" id="id_password" required>
+        {% if form.password.errors %}<div style="color:var(--color-trading-down);margin-top:4px;font-size:13px;">{{ form.password.errors|striptags }}</div>{% endif %}
+      </div>
+      {% if form.non_field_errors %}<div style="color:var(--color-trading-down);margin-bottom:var(--spacing-md);">{{ form.non_field_errors|striptags }}</div>{% endif %}
+      <button type="submit" class="btn-primary" style="width:100%;">Log In</button>
+    </form>
+    <p class="text-muted" style="margin:var(--spacing-md) 0 0;text-align:center;">Don't have an account? <a href="{% url 'accounts:register' %}">Register</a></p>
+  </div>
+</div>
+{% endblock %}
