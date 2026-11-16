@@ -6,15 +6,15 @@ A web-based currency converter built with Django, Supabase, and a Binance-inspir
 
 - **Backend:** Python 3.11+, Django 5.1.7
 - **Database:** Supabase (PostgreSQL)
-- **Frontend:** Django Templates, Vanilla CSS (strictly following `DESIGN.md` tokens, no CSS frameworks)
+- **Frontend:** Django Templates, Vanilla CSS 
 - **External API:** Frankfurter (exchange rates, Phase 2)
 
-## Key Features (Phase 1 Complete)
+## Key Features 
 
 - **Custom email-based authentication** — no username; email is the login identifier.
 - **Role-based access control** — separate `ADMIN` and `USER` dashboards with enforced routing/isolation.
-- **Profile management** — view/edit full name, contact number, and optional profile photo; light-mode transactional UI vs. dark product UI per `DESIGN.md`.
-- **Strict adherence to `DESIGN.md`** — colors, typography, radii, spacing, and components come only from its token system.
+- **Profile management** — view/edit full name, contact number, and optional profile photo.
+- 
 
 ## Local Setup
 
@@ -81,8 +81,4 @@ Open http://127.0.0.1:8000/register/ to register, or http://127.0.0.1:8000/login
 - `templates/` — shared `base.html` plus auth, dashboard, and profile templates.
 - `static/css/` — `tokens.css` (DESIGN.md custom properties) and `app.css` (hand-written components).
 
-## Phase 2 Roadmap
 
-- Currency converter implementation (Frankfurter API integration, swap, refresh).
-- Conversion history tracking (save every conversion, view/search/filter).
-- Favorite currency pairs (add/edit/delete).
