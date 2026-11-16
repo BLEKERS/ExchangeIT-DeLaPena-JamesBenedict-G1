@@ -49,6 +49,12 @@ class LoginForm(forms.Form):
     email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
 
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if email:
+            return email.strip().lower()
+        return email
+
 
 class ProfileEditForm(forms.ModelForm):
     class Meta:
