@@ -24,3 +24,8 @@ staticfiles/
 .DS_Store
 .idea/
 .vscode/
+
+# Ignore project documentation from remote
+AGENTS.md
+DESIGN.md
+PHASE1_NOTES.md
