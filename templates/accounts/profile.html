@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Profile · ExchangeIt{% endblock %}
+{% block content %}
+<div style="background:var(--color-canvas-light);color:var(--color-ink);margin:calc(-1 * var(--spacing-xl)) calc(-1 * var(--spacing-lg));padding:var(--spacing-xl) var(--spacing-lg);min-height:60vh;">
+  <div class="container" style="max-width:720px;">
+    <h1 class="text-title" style="margin:0 0 var(--spacing-lg);color:var(--color-ink);">Profile</h1>
+    <div class="card-light">
+      {% if profile_user.profile_photo %}
+        <div style="margin-bottom:var(--spacing-md);">
+          <img src="{{ profile_user.profile_photo.url }}" alt="Profile photo" style="width:96px;height:96px;object-fit:cover;border-radius:var(--radius-lg);border:1px solid var(--color-hairline-on-light);">
+        </div>
+      {% endif %}
+      <div style="display:grid;gap:var(--spacing-sm);">
+        <div><strong>Full Name:</strong> <span class="text-body">{{ profile_user.full_name }}</span></div>
+        <div><strong>Email:</strong> <span class="text-body">{{ profile_user.email }}</span></div>
+        <div><strong>Contact Number:</strong> <span class="text-body">{{ profile_user.contact_number|default:"—" }}</span></div>
+        <div><strong>Role:</strong> <span class="text-number">{{ profile_user.role }}</span></div>
+        <div><strong>Joined:</strong> <span class="text-number">{{ profile_user.created_at|date:"Y-m-d H:i" }}</span></div>
+      </div>
+      <div style="margin-top:var(--spacing-lg);">
+        <a href="{% url 'accounts:profile_edit' %}" class="btn-primary">Edit Profile</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

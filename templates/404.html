@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}404 · ExchangeIt{% endblock %}
+{% block content %}
+<div style="max-width:520px;margin:var(--spacing-section) auto;text-align:center;">
+  <div class="text-hero">404</div>
+  <h1 class="text-title" style="margin:var(--spacing-md) 0;">Page Not Found</h1>
+  <p class="text-muted" style="margin:0 0 var(--spacing-lg);">The page you are looking for doesn't exist or has been moved.</p>
+  <a href="{% url 'accounts:post_login' %}" class="btn-primary">Go to Dashboard</a>
+</div>
+{% endblock %}
