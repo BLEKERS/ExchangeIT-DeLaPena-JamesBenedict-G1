@@ -1,16 +1,20 @@
 {% extends "base.html" %}
 {% block title %}User Dashboard · ExchangeIt{% endblock %}
 {% block content %}
-<h1 class="text-title" style="margin:0 0 var(--spacing-lg);">User Dashboard</h1>
+<h1 class="text-title" style="margin:0 0 var(--spacing-lg);">Welcome back, {{ request.user.full_name }}</h1>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--spacing-lg);margin-bottom:var(--spacing-xl);">
   <div class="card-dark">
     <div class="text-muted" style="margin-bottom:var(--spacing-xs);">Total Conversions</div>
-    <div class="text-number" style="font-size:24px;">0</div>
+    <div class="text-number" style="font-size:24px;">{{ total_conversions }}</div>
   </div>
   <div class="card-dark">
     <div class="text-muted" style="margin-bottom:var(--spacing-xs);">Favorite Pairs</div>
     <div class="text-number" style="font-size:24px;">0</div>
   </div>
 </div>
-<a href="#" class="btn-primary">Go to Converter</a>
+<div style="display:flex;gap:var(--spacing-sm);">
+  <a href="{% url 'converter:convert' %}" class="btn-primary">Start Converting</a>
+  <a href="{% url 'converter:history' %}" class="btn-secondary">View History</a>
+  <a href="{% url 'converter:favorites' %}" class="btn-secondary">View Favorites</a>
+</div>
 {% endblock %}

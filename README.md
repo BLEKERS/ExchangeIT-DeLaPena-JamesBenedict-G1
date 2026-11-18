@@ -14,7 +14,16 @@ A web-based currency converter built with Django, Supabase, and a Binance-inspir
 - **Custom email-based authentication** — no username; email is the login identifier.
 - **Role-based access control** — separate `ADMIN` and `USER` dashboards with enforced routing/isolation.
 - **Profile management** — view/edit full name, contact number, and optional profile photo.
-- 
+
+## Core Feature
+
+The Phase 2 currency converter is available to logged-in `USER` accounts:
+
+- **Currency Converter** (`/converter/convert/`) — choose a from/to currency and amount; rates come live from the [Frankfurter API](https://www.frankfurter.app/). Each successful conversion is saved to history.
+- **Conversion History** (`/converter/history/`) — review past conversions with the rate used, and delete records you no longer need.
+- **Favorite Pairs** (`/converter/favorites/`) — save frequently used pairs, quick-convert them, or delete them.
+
+Unsupported pairs or API failures show a friendly error instead of saving a record.
 
 ## Local Setup
 
@@ -60,13 +69,19 @@ cp .env.example .env
 python manage.py migrate
 ```
 
-### 6. Create a superuser
+### 6. Seed currencies
+
+```bash
+python manage.py seed_currencies
+```
+
+### 7. Create a superuser
 
 ```bash
 python manage.py createsuperuser
 ```
 
-### 7. Run the server
+### 8. Run the server
 
 ```bash
 python manage.py runserver
@@ -77,6 +92,7 @@ Open http://127.0.0.1:8000/register/ to register, or http://127.0.0.1:8000/login
 ## Project Structure
 
 - `accounts/` — custom `User` model/manager, auth forms and views, role decorators, profile logic, migrations.
+- `converter/` — currency models, conversion/favorite forms and views, Frankfurter client, seed command, migrations.
 - `exchangeit/` — Django project package: settings, URL configuration, WSGI/ASGI entrypoints.
 - `templates/` — shared `base.html` plus auth, dashboard, and profile templates.
 - `static/css/` — `tokens.css` (DESIGN.md custom properties) and `app.css` (hand-written components).
