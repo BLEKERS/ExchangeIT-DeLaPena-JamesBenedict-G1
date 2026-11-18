@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from .models import Currency
+from .models import Currency, FavoritePair
 
 
 class ConversionForm(forms.Form):
@@ -26,4 +26,33 @@ class ConversionForm(forms.Form):
         to_currency = cleaned_data.get("to_currency")
         if from_currency and from_currency == to_currency:
             raise ValidationError("From and to currencies must be different.")
+        return cleaned_data
+
+
+class FavoritePairForm(forms.ModelForm):
+    class Meta:
+        model = FavoritePair
+        fields = ["from_currency", "to_currency"]
+        widgets = {
+            "from_currency": forms.Select(attrs={"class": "input-dark"}),
+            "to_currency": forms.Select(attrs={"class": "input-dark"}),
+        }
+
+    def __init__(self, *args, user=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+
+    def clean(self):
+        cleaned_data = super().clean()
+        from_currency = cleaned_data.get("from_currency")
+        to_currency = cleaned_data.get("to_currency")
+        if from_currency and to_currency:
+            if from_currency == to_currency:
+                raise ValidationError("From and to currencies must be different.")
+            if self.user and FavoritePair.objects.filter(
+                user=self.user,
+                from_currency=from_currency,
+                to_currency=to_currency,
+            ).exists():
+                raise ValidationError("This favorite pair already exists.")
         return cleaned_data

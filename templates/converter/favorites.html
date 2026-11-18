@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Favorite Pairs · ExchangeIt{% endblock %}
+{% block content %}
+<h1 class="text-title" style="margin:0 0 var(--spacing-lg);">Favorite Pairs</h1>
+
+<div class="card-dark">
+  <form method="post" action="{% url 'converter:favorite_add' %}" style="margin-bottom:var(--spacing-lg);">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <div style="display:flex;gap:var(--spacing-sm);flex-wrap:wrap;align-items:flex-end;">
+      <div class="form-group" style="flex:1;min-width:160px;margin:0;">
+        <label for="{{ form.from_currency.id_for_label }}">From</label>
+        {{ form.from_currency }}
+        {{ form.from_currency.errors }}
+      </div>
+      <div class="form-group" style="flex:1;min-width:160px;margin:0;">
+        <label for="{{ form.to_currency.id_for_label }}">To</label>
+        {{ form.to_currency }}
+        {{ form.to_currency.errors }}
+      </div>
+      <button type="submit" class="btn-primary">Add Favorite</button>
+    </div>
+  </form>
+
+  {% if favorites %}
+    <ul style="list-style:none;margin:0;padding:0;">
+      {% for favorite in favorites %}
+        <li style="display:flex;justify-content:space-between;align-items:center;gap:var(--spacing-sm);flex-wrap:wrap;padding:var(--spacing-sm) 0;border-top:1px solid var(--color-hairline-on-dark);">
+          <div class="text-title-sm">
+            {{ favorite.from_currency.currency_code }} &rarr; {{ favorite.to_currency.currency_code }}
+          </div>
+          <div style="display:flex;gap:var(--spacing-sm);">
+            <a class="btn-secondary" href="{% url 'converter:convert' %}?from={{ favorite.from_currency.currency_code }}&to={{ favorite.to_currency.currency_code }}">Quick Convert</a>
+            <form method="post" action="{% url 'converter:favorite_delete' favorite.pk %}" style="margin:0;">
+              {% csrf_token %}
+              <button type="submit" class="btn-secondary" style="color:var(--color-trading-down);">Delete</button>
+            </form>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="text-muted" style="margin:0;">No favorite pairs yet.</p>
+  {% endif %}
+</div>
+{% endblock %}
