@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.views.decorators.http import require_POST
 
+from converter.models import ConversionHistory
+
 from .decorators import admin_required, user_required
 from .forms import LoginForm, ProfileEditForm, RegisterForm
 
@@ -63,7 +65,12 @@ def post_login(request):
 @login_required
 @user_required
 def user_dashboard(request):
-    return render(request, "dashboards/user_dashboard.html")
+    total_conversions = ConversionHistory.objects.filter(user=request.user).count()
+    return render(
+        request,
+        "dashboards/user_dashboard.html",
+        {"total_conversions": total_conversions},
+    )
 
 
 @login_required
