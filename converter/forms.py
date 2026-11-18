@@ -5,9 +5,20 @@ from .models import Currency
 
 
 class ConversionForm(forms.Form):
-    from_currency = forms.ModelChoiceField(queryset=Currency.objects.filter(is_active=True))
-    to_currency = forms.ModelChoiceField(queryset=Currency.objects.filter(is_active=True))
-    amount = forms.DecimalField(min_value=0.01, max_digits=18, decimal_places=2)
+    from_currency = forms.ModelChoiceField(
+        queryset=Currency.objects.filter(is_active=True),
+        widget=forms.Select(attrs={"class": "input-dark"}),
+    )
+    to_currency = forms.ModelChoiceField(
+        queryset=Currency.objects.filter(is_active=True),
+        widget=forms.Select(attrs={"class": "input-dark"}),
+    )
+    amount = forms.DecimalField(
+        min_value=0.01,
+        max_digits=18,
+        decimal_places=2,
+        widget=forms.NumberInput(attrs={"class": "input-dark", "min": "0.01"}),
+    )
 
     def clean(self):
         cleaned_data = super().clean()
