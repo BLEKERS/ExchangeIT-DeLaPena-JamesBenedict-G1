@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Conversion History · ExchangeIt{% endblock %}
+{% block content %}
+<h1 class="text-title" style="margin:0 0 var(--spacing-lg);">Conversion History</h1>
+
+<div class="card-dark">
+  {% if history %}
+    <table style="width:100%;border-collapse:collapse;">
+      <tbody>
+        {% for record in history %}
+          <tr style="border-bottom:1px solid var(--color-hairline-on-dark);">
+            <td style="padding:var(--spacing-sm) 0;">
+              <div class="text-muted">{{ record.converted_at|date:"M j, Y - H:i" }}</div>
+              <div style="margin-top:var(--spacing-xxs);">
+                {{ record.amount }} {{ record.from_currency.currency_code }}
+                &rarr;
+                {{ record.converted_amount }} {{ record.to_currency.currency_code }}
+              </div>
+              <div class="text-muted" style="margin-top:var(--spacing-xxs);">
+                Rate used: 1 {{ record.from_currency.currency_code }} =
+                {{ record.exchange_rate }} {{ record.to_currency.currency_code }}
+              </div>
+            </td>
+            <td style="padding:var(--spacing-sm) 0;text-align:right;vertical-align:middle;">
+              <form method="post" action="{% url 'converter:delete_history' record.pk %}" style="margin:0;">
+                {% csrf_token %}
+                <button type="submit" class="btn-secondary" style="color:var(--color-trading-down);">Delete</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="text-muted" style="margin:0 0 var(--spacing-md);">No conversions yet.</p>
+    <a href="{% url 'converter:convert' %}" class="btn-primary">Convert Currency</a>
+  {% endif %}
+</div>
+{% endblock %}

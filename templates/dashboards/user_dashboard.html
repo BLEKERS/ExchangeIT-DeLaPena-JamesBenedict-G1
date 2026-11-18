@@ -5,12 +5,15 @@
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--spacing-lg);margin-bottom:var(--spacing-xl);">
   <div class="card-dark">
     <div class="text-muted" style="margin-bottom:var(--spacing-xs);">Total Conversions</div>
-    <div class="text-number" style="font-size:24px;">0</div>
+    <div class="text-number" style="font-size:24px;">{{ total_conversions }}</div>
   </div>
   <div class="card-dark">
     <div class="text-muted" style="margin-bottom:var(--spacing-xs);">Favorite Pairs</div>
     <div class="text-number" style="font-size:24px;">0</div>
   </div>
 </div>
-<a href="{% url 'converter:convert' %}" class="btn-primary">Start Converting</a>
+<div style="display:flex;gap:var(--spacing-sm);">
+  <a href="{% url 'converter:convert' %}" class="btn-primary">Start Converting</a>
+  <a href="{% url 'converter:history' %}" class="btn-secondary">View History</a>
+</div>
 {% endblock %}

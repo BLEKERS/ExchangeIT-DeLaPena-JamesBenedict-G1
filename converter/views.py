@@ -2,7 +2,8 @@ from decimal import Decimal
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
 
 from accounts.decorators import user_required
 
@@ -48,3 +49,19 @@ def convert_view(request):
             return redirect("converter:convert")
 
     return render(request, "converter/convert.html", {"form": form})
+
+
+@login_required
+@user_required
+def history_view(request):
+    history = ConversionHistory.objects.filter(user=request.user)
+    return render(request, "converter/history.html", {"history": history})
+
+
+@login_required
+@require_POST
+def delete_history_view(request, pk):
+    record = get_object_or_404(ConversionHistory, pk=pk, user=request.user)
+    record.delete()
+    messages.success(request, "Conversion record deleted.")
+    return redirect("converter:history")

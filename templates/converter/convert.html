@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% block title %}Currency Converter · ExchangeIt{% endblock %}
 {% block content %}
+<style>
+  /* Hide the duplicated success toast; the result card below is the page's success display. */
+  .messages .success { display: none; }
+</style>
 <div class="card-dark" style="max-width:460px;margin:0 auto;padding:var(--spacing-xl);">
   <h1 class="text-title" style="margin:0 0 var(--spacing-lg);">Currency Converter</h1>
 
