@@ -7,3 +7,7 @@ Pillow==11.1.0
 
 # Phase 2 — currency converter
 requests==2.34.2
+
+# Dev server — reliable hot reload on Windows
+django-extensions==4.1
+Werkzeug==3.1.9

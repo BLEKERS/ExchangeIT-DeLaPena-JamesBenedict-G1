@@ -92,8 +92,10 @@ python manage.py createsuperuser
 ### 8. Run the server
 
 ```bash
-python manage.py runserver
+python manage.py runserver_plus
 ```
+
+On Windows, `runserver_plus` uses Werkzeug's stat poller for reliable hot reload (configured in `settings.py`).
 
 Open http://127.0.0.1:8000/register/ to register, or http://127.0.0.1:8000/login/ to log in.
 

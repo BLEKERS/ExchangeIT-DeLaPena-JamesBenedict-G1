@@ -12,10 +12,15 @@ def get_exchange_rate(from_code: str, to_code: str) -> dict | None:
             timeout=10,
         )
         response.raise_for_status()
-        return {"rate": float(response.json()["rates"][to_code]), "source": "Frankfurter"}
+        rates = response.json()["rates"]
+        if to_code not in rates:
+            return {"error": "unsupported_currency"}
+        return {"rate": float(rates[to_code]), "source": "Frankfurter"}
     except requests.HTTPError:
         if response is not None and response.status_code == 404:
             return {"error": "unsupported_currency"}
         return None
-    except (requests.RequestException, ValueError, KeyError, TypeError):
+    except (ValueError, KeyError, TypeError):
+        return {"error": "unsupported_currency"}
+    except requests.RequestException:
         return None
