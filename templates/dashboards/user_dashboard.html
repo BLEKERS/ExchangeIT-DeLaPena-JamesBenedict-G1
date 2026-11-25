@@ -1,20 +1,60 @@
 {% extends "base.html" %}
 {% block title %}User Dashboard · ExchangeIt{% endblock %}
 {% block content %}
-<h1 class="text-title" style="margin:0 0 var(--spacing-lg);">Welcome back, {{ request.user.full_name }}</h1>
-<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--spacing-lg);margin-bottom:var(--spacing-xl);">
-  <div class="card-dark">
-    <div class="text-muted" style="margin-bottom:var(--spacing-xs);">Total Conversions</div>
-    <div class="text-number" style="font-size:24px;">{{ total_conversions }}</div>
+<div class="dashboard-wrap">
+  <div class="page-header dashboard-header">
+    <div>
+      <span class="eyebrow">Account overview</span>
+      <h1 class="text-title">Welcome back, {{ request.user.full_name }}</h1>
+      <p class="page-lede">Here is your conversion summary.</p>
+    </div>
   </div>
-  <div class="card-dark">
-    <div class="text-muted" style="margin-bottom:var(--spacing-xs);">Favorite Pairs</div>
-    <div class="text-number" style="font-size:24px;">0</div>
+
+  <div class="stat-grid">
+    <div class="card-dark stat-card stat-card--feature">
+      <span class="stat-icon-badge">
+        <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 3v5h-5"/>
+          <path d="M3 21v-5h5"/>
+          <path d="M5.6 9A8 8 0 0 1 19 6.4L21 8"/>
+          <path d="M18.4 15A8 8 0 0 1 5 17.6L3 16"/>
+        </svg>
+      </span>
+      <div class="stat-label">Total Conversions</div>
+      <div class="stat-figure">
+        <div class="stat-value">{{ total_conversions }}</div>
+        <svg class="sparkline" viewBox="0 0 132 52" fill="none" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M1 44l18-9 18 5 18-16 18 8 18-21 18 12 18-16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M1 44l18-9 18 5 18-16 18 8 18-21 18 12 18-16v52H1z" fill="currentColor" opacity="0.09"/>
+        </svg>
+      </div>
+      <div class="stat-meta">Recorded across your account</div>
+    </div>
+
+    <div class="card-dark stat-card">
+      <span class="stat-icon-badge stat-icon-badge--blue">
+        <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 3.5l2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.2-4.1 5.8-.8L12 3.5z"/>
+        </svg>
+      </span>
+      <div class="stat-label">Favorite Pairs</div>
+      <div class="stat-value">0</div>
+      <div class="stat-meta">Saved currency pairs</div>
+    </div>
   </div>
-</div>
-<div style="display:flex;gap:var(--spacing-sm);">
-  <a href="{% url 'converter:convert' %}" class="btn-primary">Start Converting</a>
-  <a href="{% url 'converter:history' %}" class="btn-secondary">View History</a>
-  <a href="{% url 'converter:favorites' %}" class="btn-secondary">View Favorites</a>
+
+  <div class="card-dark">
+    <div class="panel-head">
+      <div>
+        <span class="eyebrow">Workspace</span>
+        <h2 class="text-title-sm">Pick up where you left off</h2>
+      </div>
+    </div>
+    <div class="btn-row">
+      <a href="{% url 'converter:convert' %}" class="btn-primary">Start Converting</a>
+      <a href="{% url 'converter:history' %}" class="btn-secondary">View History</a>
+      <a href="{% url 'converter:favorites' %}" class="btn-secondary">View Favorites</a>
+    </div>
+  </div>
 </div>
 {% endblock %}

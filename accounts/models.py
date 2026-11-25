@@ -10,7 +10,7 @@ class UserManager(BaseUserManager):
             raise ValueError("Users must have an email address.")
         if not password:
             raise ValueError("A password is required.")  # BR-03
-        email = self.normalize_email(email)
+        email = self.normalize_email(email).strip().lower()
         extra_fields.setdefault("role", User.Roles.USER)
         extra_fields.setdefault("is_active", True)
         extra_fields.setdefault("is_staff", False)

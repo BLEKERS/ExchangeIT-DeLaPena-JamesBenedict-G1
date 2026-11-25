@@ -3,7 +3,10 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
+from accounts.views import home_redirect
+
 urlpatterns = [
+    path("", home_redirect, name="home"),
     path("admin/", admin.site.urls),
     path("converter/", include("converter.urls")),
     path("", include("accounts.urls")),
