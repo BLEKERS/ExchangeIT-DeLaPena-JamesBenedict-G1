@@ -45,7 +45,8 @@ def convert_view(request):
             )
         elif result.get("error") == "unsupported_currency":
             messages.error(
-                request, "This currency pair is not supported by our rate provider."
+                request,
+                "The selected currency pair is not supported by our live rate provider.",
             )
         else:
             rate = Decimal(str(result["rate"]))
