@@ -76,6 +76,10 @@ class ConversionHistory(models.Model):
                 condition=models.Q(amount__gt=0),
                 name='amount_must_be_positive',
             ),
+            models.CheckConstraint(  # BR-18
+                condition=models.Q(exchange_rate__gt=0),
+                name='exchange_rate_must_be_positive',
+            ),
             models.CheckConstraint(  # BR-12
                 condition=models.Q(converted_amount__gt=0),
                 name='converted_amount_must_be_positive',

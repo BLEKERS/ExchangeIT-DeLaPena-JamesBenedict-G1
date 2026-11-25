@@ -91,7 +91,8 @@ class CoreFeatureTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertFalse(ConversionHistory.objects.exists())
         self.assertContains(
-            response, "This currency pair is not supported by our rate provider."
+            response,
+            "The selected currency pair is not supported by our live rate provider.",
         )
 
     def test_user_cannot_delete_others_history(self):
