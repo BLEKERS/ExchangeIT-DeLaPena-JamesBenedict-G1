@@ -2,6 +2,7 @@ from decimal import Decimal
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db import transaction
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
@@ -56,14 +57,15 @@ def convert_view(request):
             elif converted_amount >= Decimal("10000000000000000"):
                 form.add_error(None, "The converted amount is too large to record.")
             else:
-                ConversionHistory.objects.create(
-                    user=request.user,
-                    from_currency=from_currency,
-                    to_currency=to_currency,
-                    amount=amount,
-                    exchange_rate=rate,
-                    converted_amount=converted_amount,
-                )
+                with transaction.atomic():
+                    ConversionHistory.objects.create(
+                        user=request.user,
+                        from_currency=from_currency,
+                        to_currency=to_currency,
+                        amount=amount,
+                        exchange_rate=rate,
+                        converted_amount=converted_amount,
+                    )
                 messages.success(
                     request,
                     f"Successfully converted {amount} {from_currency.currency_code} "
@@ -82,6 +84,7 @@ def history_view(request):
 
 
 @login_required
+@user_required
 @require_POST
 def delete_history_view(request, pk):
     record = get_object_or_404(ConversionHistory, pk=pk, user=request.user)
@@ -110,7 +113,8 @@ def favorite_add_view(request):
         if form.is_valid():
             favorite = form.save(commit=False)
             favorite.user = request.user
-            favorite.save()
+            with transaction.atomic():
+                favorite.save()
             messages.success(request, "Favorite pair added.")
             return redirect("converter:favorites")
     else:
@@ -148,6 +152,7 @@ def favorite_edit_view(request, pk):
 
 
 @login_required
+@user_required
 @require_POST
 def favorite_delete_view(request, pk):
     favorite = get_object_or_404(FavoritePair, pk=pk, user=request.user)

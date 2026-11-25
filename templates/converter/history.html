@@ -47,7 +47,7 @@
                   {{ record.exchange_rate }} {{ record.to_currency.currency_code }}
                 </td>
                 <td class="col-action" data-label="Actions">
-                  <form method="post" action="{% url 'converter:delete_history' record.pk %}" style="margin:0;">
+                  <form method="post" action="{% url 'converter:delete_history' record.pk %}" onsubmit="return confirm('Are you sure you want to delete this conversion record?');" style="margin:0;">
                     {% csrf_token %}
                     <button type="submit" class="btn-link-danger">Delete</button>
                   </form>

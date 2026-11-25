@@ -80,11 +80,13 @@ def admin_dashboard(request):
 
 
 @login_required
+@user_required
 def profile_view(request):
     return render(request, "accounts/profile.html", {"profile_user": request.user})
 
 
 @login_required
+@user_required
 def profile_edit(request):
     if request.method == "POST":
         form = ProfileEditForm(request.POST, request.FILES, instance=request.user)
