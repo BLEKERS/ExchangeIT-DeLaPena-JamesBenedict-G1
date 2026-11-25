@@ -1,6 +1,6 @@
 from functools import wraps
 
-from django.core.exceptions import PermissionDenied
+from django.contrib import messages
 from django.shortcuts import redirect
 
 
@@ -13,7 +13,8 @@ def user_required(view_func):
         # admins/superusers hitting user area -> admin dashboard (A1)
         if user.role == "ADMIN" or user.is_superuser:
             return redirect("accounts:admin_dashboard")
-        raise PermissionDenied
+        messages.error(request, "You do not have permission to view that page.")
+        return redirect("accounts:post_login")
 
     return _wrapped
 
@@ -24,6 +25,7 @@ def admin_required(view_func):
         user = request.user
         if user.role == "ADMIN" or user.is_superuser:  # A1
             return view_func(request, *args, **kwargs)
-        raise PermissionDenied
+        messages.error(request, "You do not have permission to view that page.")
+        return redirect("accounts:post_login")
 
     return _wrapped

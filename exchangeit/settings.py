@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "accounts",
+    "django_extensions",
     "converter",
 ]
 
@@ -101,4 +102,8 @@ LOGIN_URL = "accounts:login"
 LOGIN_REDIRECT_URL = "accounts:post_login"
 LOGOUT_REDIRECT_URL = "accounts:login"
 
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Force the stat poller for reliable hot-reloading on Windows
+RUNSERVERPLUS_POLLER_RELOADER_TYPE = 'stat'
+RUNSERVERPLUS_POLLER_RELOADER_INTERVAL = 1
