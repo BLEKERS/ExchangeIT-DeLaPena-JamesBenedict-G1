@@ -29,3 +29,7 @@ staticfiles/
 AGENTS.md
 DESIGN.md
 PHASE1_NOTES.md
+# AI Skill files
+.agents/
+.taste-skill/
+skills-lock.json
