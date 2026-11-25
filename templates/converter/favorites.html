@@ -4,7 +4,7 @@
 <h1 class="text-title" style="margin:0 0 var(--spacing-lg);">Favorite Pairs</h1>
 
 <div class="card-dark">
-  <form method="post" action="{% url 'converter:favorite_add' %}" style="margin-bottom:var(--spacing-lg);">
+  <form method="post" action="{% if edit_pk %}{% url 'converter:favorite_edit' edit_pk %}{% else %}{% url 'converter:favorite_add' %}{% endif %}" style="margin-bottom:var(--spacing-lg);">
     {% csrf_token %}
     {{ form.non_field_errors }}
 
@@ -19,7 +19,7 @@
         {{ form.to_currency }}
         {{ form.to_currency.errors }}
       </div>
-      <button type="submit" class="btn-primary">Add Favorite</button>
+      <button type="submit" class="btn-primary">{% if edit_pk %}Save Changes{% else %}Add Favorite{% endif %}</button>
     </div>
   </form>
 
@@ -32,6 +32,7 @@
           </div>
           <div style="display:flex;gap:var(--spacing-sm);">
             <a class="btn-secondary" href="{% url 'converter:convert' %}?from={{ favorite.from_currency.currency_code }}&to={{ favorite.to_currency.currency_code }}">Quick Convert</a>
+            <a class="btn-secondary" href="{% url 'converter:favorite_edit' favorite.pk %}">Edit</a>
             <form method="post" action="{% url 'converter:favorite_delete' favorite.pk %}" style="margin:0;">
               {% csrf_token %}
               <button type="submit" class="btn-secondary" style="color:var(--color-trading-down);">Delete</button>

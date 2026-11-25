@@ -42,6 +42,10 @@ def convert_view(request):
                 request,
                 "Could not fetch exchange rate for this pair. Please try again later.",
             )
+        elif result.get("error") == "unsupported_currency":
+            messages.error(
+                request, "This currency pair is not supported by our rate provider."
+            )
         else:
             rate = Decimal(str(result["rate"]))
             converted_amount = (amount * rate).quantize(Decimal("0.01"))
@@ -110,6 +114,29 @@ def favorite_add_view(request):
     )
     return render(
         request, "converter/favorites.html", {"favorites": favorites, "form": form}
+    )
+
+
+@login_required
+@user_required
+def favorite_edit_view(request, pk):
+    favorite = get_object_or_404(FavoritePair, pk=pk, user=request.user)
+    if request.method == "POST":
+        form = FavoritePairForm(request.POST, instance=favorite, user=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Favorite pair updated.")
+            return redirect("converter:favorites")
+    else:
+        form = FavoritePairForm(instance=favorite, user=request.user)
+
+    favorites = FavoritePair.objects.filter(user=request.user).select_related(
+        "from_currency", "to_currency"
+    )
+    return render(
+        request,
+        "converter/favorites.html",
+        {"favorites": favorites, "form": form, "edit_pk": favorite.pk},
     )
 
 
