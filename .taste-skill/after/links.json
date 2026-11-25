@@ -1,0 +1,89 @@
+{
+  "dashboard": {
+    "links": [
+      "#content",
+      "/login/",
+      "/converter/convert/",
+      "/converter/history/",
+      "/converter/favorites/",
+      "/profile/",
+      "/profile/edit/"
+    ],
+    "forms": [
+      "/logout/"
+    ]
+  },
+  "convert": {
+    "links": [
+      "#content",
+      "/login/",
+      "/converter/convert/",
+      "/converter/history/",
+      "/converter/favorites/",
+      "/profile/",
+      "/profile/edit/"
+    ],
+    "forms": [
+      "/logout/",
+      "/converter/convert/"
+    ]
+  },
+  "history": {
+    "links": [
+      "#content",
+      "/login/",
+      "/converter/convert/",
+      "/converter/history/",
+      "/converter/favorites/",
+      "/profile/",
+      "/profile/edit/"
+    ],
+    "forms": [
+      "/logout/",
+      "/converter/history/delete/14/",
+      "/converter/history/delete/13/",
+      "/converter/history/delete/12/",
+      "/converter/history/delete/11/",
+      "/converter/history/delete/10/"
+    ]
+  },
+  "favorites": {
+    "links": [
+      "#content",
+      "/login/",
+      "/converter/convert/",
+      "/converter/history/",
+      "/converter/favorites/",
+      "/profile/",
+      "/converter/convert/?from=EUR&to=JPY",
+      "/profile/edit/"
+    ],
+    "forms": [
+      "/logout/",
+      "/converter/favorites/add/",
+      "/converter/favorites/delete/2/"
+    ]
+  },
+  "profile": {
+    "links": [
+      "#content",
+      "/login/",
+      "/converter/convert/",
+      "/converter/history/",
+      "/converter/favorites/",
+      "/profile/",
+      "/profile/edit/"
+    ],
+    "forms": [
+      "/logout/"
+    ]
+  },
+  "login": {
+    "links": [
+      "#content",
+      "/login/",
+      "/register/"
+    ],
+    "forms": []
+  }
+}
