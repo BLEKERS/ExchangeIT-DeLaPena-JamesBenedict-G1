@@ -4,6 +4,7 @@ FRANKFURTER_URL = "https://api.frankfurter.app/latest"
 
 
 def get_exchange_rate(from_code: str, to_code: str) -> dict | None:
+    response = None
     try:
         response = requests.get(
             FRANKFURTER_URL,
@@ -12,5 +13,9 @@ def get_exchange_rate(from_code: str, to_code: str) -> dict | None:
         )
         response.raise_for_status()
         return {"rate": float(response.json()["rates"][to_code]), "source": "Frankfurter"}
+    except requests.HTTPError:
+        if response is not None and response.status_code == 404:
+            return {"error": "unsupported_currency"}
+        return None
     except (requests.RequestException, ValueError, KeyError, TypeError):
         return None

@@ -49,10 +49,14 @@ class FavoritePairForm(forms.ModelForm):
         if from_currency and to_currency:
             if from_currency == to_currency:
                 raise ValidationError("From and to currencies must be different.")
-            if self.user and FavoritePair.objects.filter(
-                user=self.user,
-                from_currency=from_currency,
-                to_currency=to_currency,
-            ).exists():
-                raise ValidationError("This favorite pair already exists.")
+            if self.user:
+                duplicate = FavoritePair.objects.filter(
+                    user=self.user,
+                    from_currency=from_currency,
+                    to_currency=to_currency,
+                )
+                if self.instance.pk:
+                    duplicate = duplicate.exclude(pk=self.instance.pk)
+                if duplicate.exists():
+                    raise ValidationError("This favorite pair already exists.")
         return cleaned_data
