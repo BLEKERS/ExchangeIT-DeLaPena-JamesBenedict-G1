@@ -49,20 +49,27 @@ def convert_view(request):
         else:
             rate = Decimal(str(result["rate"]))
             converted_amount = (amount * rate).quantize(Decimal("0.01"))
-            ConversionHistory.objects.create(
-                user=request.user,
-                from_currency=from_currency,
-                to_currency=to_currency,
-                amount=amount,
-                exchange_rate=rate,
-                converted_amount=converted_amount,
-            )
-            messages.success(
-                request,
-                f"Successfully converted {amount} {from_currency.currency_code} "
-                f"to {converted_amount} {to_currency.currency_code}.",
-            )
-            return redirect("converter:convert")
+            if converted_amount <= Decimal("0.00"):
+                form.add_error(
+                    None, "The converted amount is too small to record (less than 0.01)."
+                )
+            elif converted_amount >= Decimal("10000000000000000"):
+                form.add_error(None, "The converted amount is too large to record.")
+            else:
+                ConversionHistory.objects.create(
+                    user=request.user,
+                    from_currency=from_currency,
+                    to_currency=to_currency,
+                    amount=amount,
+                    exchange_rate=rate,
+                    converted_amount=converted_amount,
+                )
+                messages.success(
+                    request,
+                    f"Successfully converted {amount} {from_currency.currency_code} "
+                    f"to {converted_amount} {to_currency.currency_code}.",
+                )
+                return redirect("converter:convert")
 
     return render(request, "converter/convert.html", {"form": form})
 

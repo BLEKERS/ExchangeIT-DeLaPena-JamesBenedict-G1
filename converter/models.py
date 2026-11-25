@@ -17,8 +17,8 @@ class Currency(models.Model):
 
 
 class ExchangeRate(models.Model):
-    from_currency = models.ForeignKey(Currency, on_delete=models.CASCADE, related_name='rates_from')
-    to_currency = models.ForeignKey(Currency, on_delete=models.CASCADE, related_name='rates_to')
+    from_currency = models.ForeignKey(Currency, on_delete=models.PROTECT, related_name='rates_from')
+    to_currency = models.ForeignKey(Currency, on_delete=models.PROTECT, related_name='rates_to')
     rate = models.DecimalField(max_digits=18, decimal_places=8)  # BR-09
     retrieved_at = models.DateTimeField(auto_now_add=True)
     source = models.CharField(max_length=100)
@@ -39,8 +39,8 @@ class ExchangeRate(models.Model):
 
 class FavoritePair(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    from_currency = models.ForeignKey(Currency, on_delete=models.CASCADE, related_name='fav_from')
-    to_currency = models.ForeignKey(Currency, on_delete=models.CASCADE, related_name='fav_to')
+    from_currency = models.ForeignKey(Currency, on_delete=models.PROTECT, related_name='fav_from')
+    to_currency = models.ForeignKey(Currency, on_delete=models.PROTECT, related_name='fav_to')
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -58,8 +58,8 @@ class FavoritePair(models.Model):
 
 class ConversionHistory(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    from_currency = models.ForeignKey(Currency, on_delete=models.CASCADE, related_name='conv_from')
-    to_currency = models.ForeignKey(Currency, on_delete=models.CASCADE, related_name='conv_to')
+    from_currency = models.ForeignKey(Currency, on_delete=models.PROTECT, related_name='conv_from')
+    to_currency = models.ForeignKey(Currency, on_delete=models.PROTECT, related_name='conv_to')
     amount = models.DecimalField(max_digits=18, decimal_places=2)  # BR-11
     exchange_rate = models.DecimalField(max_digits=18, decimal_places=8)  # BR-18
     converted_amount = models.DecimalField(max_digits=18, decimal_places=2)  # BR-12

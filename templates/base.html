@@ -1,47 +1,107 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-type="software" data-radius="sharp">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="page-type" content="software">
+  <meta name="site-kind" content="software">
   <title>{% block title %}ExchangeIt{% endblock %}</title>
   <link rel="stylesheet" href="{% static 'css/tokens.css' %}">
   <link rel="stylesheet" href="{% static 'css/app.css' %}">
 </head>
 <body>
-  <nav class="nav-dark">
-    <div class="brand"><a href="{% url 'accounts:login' %}" style="color:inherit;">ExchangeIt</a></div>
-    <div class="nav-actions">
-      {% if user.is_authenticated %}
-        <a class="btn-secondary" href="{% url 'accounts:profile' %}">Profile</a>
-        <form method="post" action="{% url 'accounts:logout' %}" style="margin:0;">
-          {% csrf_token %}
-          <button type="submit" class="btn-secondary">Logout</button>
-        </form>
-      {% else %}
-        <a class="btn-secondary" href="{% url 'accounts:login' %}">Login</a>
-        <a class="btn-primary" href="{% url 'accounts:register' %}">Register</a>
-      {% endif %}
-    </div>
-  </nav>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="nav-dark">
+    <div class="nav-inner">
+      <div class="brand">
+        <svg class="nav-brand-mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M16 3L4 9l12 6 12-6-12-6z"/>
+          <path d="M4 16l12 6 12-6"/>
+          <path d="M4 23l12 6 12-6"/>
+        </svg>
+        <a href="{% url 'accounts:login' %}">ExchangeIt</a>
+      </div>
 
-  <main class="page">
-    <div class="container">
-      {% if messages %}
-        <ul class="messages">
-          {% for message in messages %}
-            <li class="{{ message.tags }}">{{ message }}</li>
-          {% endfor %}
-        </ul>
+      {% if user.is_authenticated %}
+        <nav class="nav-links" aria-label="Primary">
+          <a class="nav-link{% if request.path == '/converter/convert/' %} active{% endif %}" href="{% url 'converter:convert' %}">Convert</a>
+          <a class="nav-link{% if request.path == '/converter/history/' %} active{% endif %}" href="{% url 'converter:history' %}">History</a>
+          <a class="nav-link{% if request.path == '/converter/favorites/' %} active{% endif %}" href="{% url 'converter:favorites' %}">Favorites</a>
+        </nav>
       {% endif %}
-      {% block content %}{% endblock %}
+
+      <div class="nav-actions">
+        {% if user.is_authenticated %}
+          <span class="nav-user"><span class="nav-user-dot"></span>{{ request.user.full_name }}</span>
+          <a class="btn-secondary" href="{% url 'accounts:profile' %}">Profile</a>
+          <form method="post" action="{% url 'accounts:logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn-secondary">Logout</button>
+          </form>
+        {% else %}
+          <a class="btn-secondary" href="{% url 'accounts:login' %}">Login</a>
+          <a class="btn-primary" href="{% url 'accounts:register' %}">Register</a>
+        {% endif %}
+      </div>
     </div>
+  </header>
+
+  <main class="page" id="content">
+    {% if messages %}
+      <ul class="messages" aria-live="polite">
+        {% for message in messages %}
+          <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    {% block content %}{% endblock %}
   </main>
 
-  <footer class="footer-light">
-    <div class="container">
-      <p class="text-muted" style="margin:0;">ExchangeIt — currency conversion, simplified.</p>
+  <footer class="footer-dark">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="footer-brand">ExchangeIt</div>
+          <p class="text-muted">Currency conversion, simplified. Convert, track and save the pairs you use most.</p>
+        </div>
+        <div class="footer-col">
+          <h2>Platform</h2>
+          <ul>
+            {% if user.is_authenticated %}
+              <li><a href="{% url 'converter:convert' %}">Converter</a></li>
+              <li><a href="{% url 'converter:history' %}">History</a></li>
+              <li><a href="{% url 'converter:favorites' %}">Favorites</a></li>
+            {% else %}
+              <li><a href="{% url 'accounts:login' %}">Converter</a></li>
+            {% endif %}
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h2>Account</h2>
+          <ul>
+            {% if user.is_authenticated %}
+              <li><a href="{% url 'accounts:profile' %}">Profile</a></li>
+              <li><a href="{% url 'accounts:profile_edit' %}">Edit Profile</a></li>
+            {% else %}
+              <li><a href="{% url 'accounts:login' %}">Log In</a></li>
+              <li><a href="{% url 'accounts:register' %}">Register</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; {% now "Y" %} ExchangeIt. All rights reserved.</span>
+        <span>Rates are for informational purposes only.</span>
+      </div>
     </div>
   </footer>
+
+  <script>
+    // Non-critical toasts dismiss themselves; errors stay until the next page.
+    document.querySelectorAll(".messages li:not(.error)").forEach(function (toast) {
+      setTimeout(function () { toast.remove(); }, 5000);
+    });
+  </script>
 </body>
 </html>

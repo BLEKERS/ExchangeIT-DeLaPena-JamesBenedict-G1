@@ -1,25 +1,49 @@
 {% extends "base.html" %}
 {% block title %}Log In · ExchangeIt{% endblock %}
 {% block content %}
-<div style="display:flex;justify-content:center;align-items:center;min-height:60vh;">
-  <div class="card-dark" style="width:100%;max-width:420px;">
-    <h1 class="text-title" style="margin:0 0 var(--spacing-lg);">Log In</h1>
-    <form method="post" novalidate>
-      {% csrf_token %}
-      <div class="form-group">
-        <label for="id_email">Email</label>
-        <input class="input-dark" type="email" name="email" id="id_email" value="{{ form.email.value|default:'' }}" required>
-        {% if form.email.errors %}<div style="color:var(--color-trading-down);margin-top:4px;font-size:13px;">{{ form.email.errors|striptags }}</div>{% endif %}
+<div class="auth-wrap">
+  <div class="auth-shell">
+    <div class="auth-showcase">
+      <span class="eyebrow">ExchangeIt · Currency markets</span>
+      <h2 class="text-display">Convert with clarity.</h2>
+      <p class="page-lede">One clean ticket, a live reference rate, and a record of every conversion you make.</p>
+      <div class="showcase-frame" aria-hidden="true">
+        <svg viewBox="0 0 520 260" fill="none" stroke="currentColor" stroke-width="1" opacity="0.55">
+          <circle cx="360" cy="120" r="96"/>
+          <circle cx="360" cy="120" r="62"/>
+          <circle cx="360" cy="120" r="28"/>
+          <path d="M264 120h192M360 24v192M291 51l138 138M429 51L291 189"/>
+          <path d="M24 196h132M24 176h84M24 156h108"/>
+          <path d="M24 216h192" stroke-width="2"/>
+        </svg>
       </div>
-      <div class="form-group">
-        <label for="id_password">Password</label>
-        <input class="input-dark" type="password" name="password" id="id_password" required>
-        {% if form.password.errors %}<div style="color:var(--color-trading-down);margin-top:4px;font-size:13px;">{{ form.password.errors|striptags }}</div>{% endif %}
+      <div class="showcase-caption">
+        <span>Live reference rates</span>
+        <span>Saved history</span>
+        <span>Favorite pairs</span>
       </div>
-      {% if form.non_field_errors %}<div style="color:var(--color-trading-down);margin-bottom:var(--spacing-md);">{{ form.non_field_errors|striptags }}</div>{% endif %}
-      <button type="submit" class="btn-primary" style="width:100%;">Log In</button>
-    </form>
-    <p class="text-muted" style="margin:var(--spacing-md) 0 0;text-align:center;">Don't have an account? <a href="{% url 'accounts:register' %}">Register</a></p>
+    </div>
+
+    <div class="card-dark auth-card">
+      <span class="eyebrow">Welcome back</span>
+      <h1 class="text-title">Log In</h1>
+      <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="id_email">Email</label>
+          <input class="input-dark" type="email" name="email" id="id_email" value="{{ form.email.value|default:'' }}" required>
+          {% if form.email.errors %}<div class="field-error">{{ form.email.errors|striptags }}</div>{% endif %}
+        </div>
+        <div class="form-group">
+          <label for="id_password">Password</label>
+          <input class="input-dark" type="password" name="password" id="id_password" required>
+          {% if form.password.errors %}<div class="field-error">{{ form.password.errors|striptags }}</div>{% endif %}
+        </div>
+        {% if form.non_field_errors %}<div class="form-error">{{ form.non_field_errors|striptags }}</div>{% endif %}
+        <button type="submit" class="btn-primary btn-block">Log In</button>
+      </form>
+      <p class="text-muted auth-alt">Don't have an account? <a href="{% url 'accounts:register' %}">Register</a></p>
+    </div>
   </div>
 </div>
 {% endblock %}

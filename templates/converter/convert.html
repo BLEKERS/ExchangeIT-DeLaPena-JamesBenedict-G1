@@ -5,45 +5,83 @@
   /* Hide the duplicated success toast; the result card below is the page's success display. */
   .messages .success { display: none; }
 </style>
-<div class="card-dark" style="max-width:460px;margin:0 auto;padding:var(--spacing-xl);">
-  <h1 class="text-title" style="margin:0 0 var(--spacing-lg);">Currency Converter</h1>
-
-  <form method="post" action="{% url 'converter:convert' %}">
-    {% csrf_token %}
-    {{ form.non_field_errors }}
-
-    <div class="form-group">
-      <label for="{{ form.amount.id_for_label }}">Amount</label>
-      {{ form.amount }}
-      {{ form.amount.errors }}
+<div class="container--narrow">
+  <div class="page-header">
+    <div>
+      <span class="eyebrow">Currency markets</span>
+      <h1 class="text-title">Currency Converter</h1>
+      <p class="page-lede">Enter an amount, choose a pair, and convert at the live reference rate.</p>
     </div>
+  </div>
 
-    <div class="form-group">
-      <label for="{{ form.from_currency.id_for_label }}">From</label>
-      {{ form.from_currency }}
-    </div>
+  <div class="trade-shell">
+    <section class="card-dark convert-card" aria-label="Conversion form">
+      <div class="panel-head">
+        <div>
+          <span class="eyebrow">New conversion</span>
+          <h2 class="text-title-sm">Trade ticket</h2>
+        </div>
+      </div>
 
-    <div class="form-group" style="text-align:center;">
-      <button type="button" id="swap-btn" class="btn-secondary">Swap</button>
-    </div>
+      <form method="post" action="{% url 'converter:convert' %}" class="convert-form">
+        {% csrf_token %}
+        <div class="form-errors">{{ form.non_field_errors }}</div>
 
-    <div class="form-group">
-      <label for="{{ form.to_currency.id_for_label }}">To</label>
-      {{ form.to_currency }}
-    </div>
+        <div class="form-field area-amount">
+          <label for="{{ form.amount.id_for_label }}">Amount</label>
+          {{ form.amount }}
+          {{ form.amount.errors }}
+        </div>
 
-    <button type="submit" class="btn-primary" style="width:100%;">Convert</button>
-  </form>
+        <div class="form-field area-from">
+          <label for="{{ form.from_currency.id_for_label }}">From</label>
+          {{ form.from_currency }}
+        </div>
+
+        <button type="button" id="swap-btn" class="swap-btn" aria-label="Swap currencies" title="Swap currencies">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 8h15l-3.5-3.5"/>
+            <path d="M20 16H5l3.5 3.5"/>
+          </svg>
+        </button>
+
+        <div class="form-field area-to">
+          <label for="{{ form.to_currency.id_for_label }}">To</label>
+          {{ form.to_currency }}
+        </div>
+
+        <button type="submit" class="btn-primary btn-block area-submit">Convert Currency</button>
+      </form>
+    </section>
+
+    <aside class="card-dark trade-result" aria-label="Conversion result">
+      <div class="trade-result-head">
+        <span class="live-tag"><span class="live-dot"></span>Live rate</span>
+        <span class="text-muted text-caption">Frankfurter</span>
+      </div>
+
+      {% for message in messages %}
+        {% if message.tags == "success" %}
+          <div class="result-card">
+            <div class="result-label">Converted amount</div>
+            <div class="text-number result-value" data-result>{{ message }}</div>
+            <div class="result-note">Reference rate · saved to your history</div>
+          </div>
+        {% endif %}
+      {% endfor %}
+
+      {% if not messages %}
+        <div class="result-empty">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/>
+          </svg>
+          <strong>Your result appears here</strong>
+          <span class="text-muted text-caption">Submit a ticket to see the converted value.</span>
+        </div>
+      {% endif %}
+    </aside>
+  </div>
 </div>
-
-{% for message in messages %}
-  {% if message.tags == "success" %}
-    <div class="card-dark" style="max-width:460px;margin:var(--spacing-lg) auto 0;text-align:center;">
-      <div class="text-muted" style="margin-bottom:var(--spacing-xs);">Conversion result</div>
-      <div class="text-number" style="font-size:28px;font-weight:700;">{{ message }}</div>
-    </div>
-  {% endif %}
-{% endfor %}
 
 <script>
   document.getElementById('swap-btn').addEventListener('click', function() {
@@ -52,6 +90,21 @@
     let temp = from.value;
     from.value = to.value;
     to.value = temp;
+  });
+
+  // Split the success message into a muted input side and an accented result.
+  document.querySelectorAll('[data-result]').forEach(function(el) {
+    var text = el.textContent.trim();
+    var match = text.match(/^(.*?)(?:\s+to\s+|\s+=\s+)(.+)$/);
+    if (!match) return;
+    var left = document.createElement('span');
+    left.className = 'result-from';
+    left.textContent = match[1] + ' to ';
+    var right = document.createElement('span');
+    right.className = 'result-to';
+    right.textContent = match[2];
+    el.textContent = '';
+    el.append(left, right);
   });
 </script>
 {% endblock %}

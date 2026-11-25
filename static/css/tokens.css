@@ -1,44 +1,54 @@
-/* DESIGN.md token system (single source of truth). No invented colors/radii/spacing. */
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+/* ExchangeIt design tokens — dealt from the dark fintech brand: deep slate,
+   electric blue, Manrope for interface, JetBrains Mono for numbers. */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400..700&family=JetBrains+Mono:wght@400..500&display=swap');
 
 :root {
   /* Brand & accent */
-  --color-primary: #fcd535;
-  --color-primary-active: #f0b90b;
-  --color-primary-disabled: #3a3a1f;
-  --color-accent-turquoise: #2dbdb6;
-  /* Text */
-  --color-ink: #181a20;
-  --color-body: #eaecef;
-  --color-body-on-light: #181a20;
-  --color-muted: #707a8a;
-  --color-muted-strong: #929aa5;
-  --color-on-primary: #181a20;
-  --color-on-dark: #ffffff;
-  /* Surfaces */
-  --color-canvas-dark: #0b0e11;
-  --color-canvas-light: #ffffff;
-  --color-surface-card-dark: #1e2329;
-  --color-surface-elevated-dark: #2b3139;
-  --color-surface-soft-light: #fafafa;
-  --color-surface-strong-light: #f5f5f5;
-  /* Hairlines & borders */
-  --color-hairline-on-dark: #2b3139;
-  --color-hairline-on-light: #eaecef;
-  --color-border-strong: #cdd1d6;
-  /* Trading semantics */
-  --color-trading-up: #0ecb81;
-  --color-trading-down: #f6465d;
-  /* Info / focus */
-  --color-info: #3b82f6;
-  --color-info-ring: #3b82f6;
+  --color-primary: #0052ff;
+  --color-primary-active: #1a66ff;
+  --color-primary-disabled: #1b2a45;
+  --color-accent: #3b82f6;
+  --color-accent-turquoise: #10b981;
 
-  /* Radii */
-  --radius-xs: 2px;
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 8px;
-  --radius-xl: 12px;
+  /* Text */
+  --color-ink: #0b1220;
+  --color-body: #f8fafc;
+  --color-body-on-light: #0f172a;
+  --color-muted: #94a3b8;
+  --color-muted-strong: #cbd5e1;
+  --color-on-primary: #ffffff;
+  --color-on-dark: #f8fafc;
+  --color-heading: #f8fafc;
+
+  /* Surfaces */
+  --color-canvas-dark: #0b1220;
+  --color-canvas-deep: #070d18;
+  --color-canvas-light: #ffffff;
+  --color-surface-card-dark: #131e32;
+  --color-surface-elevated-dark: #1b2940;
+  --color-surface-soft-light: #f8fafc;
+  --color-surface-strong-light: #f1f5f9;
+
+  /* Hairlines & borders */
+  --color-hairline-on-dark: #263750;
+  --color-hairline-on-light: #e2e8f0;
+  --color-border-strong: #cbd5e1;
+  --color-glass-border: rgba(148, 163, 184, 0.16);
+
+  /* Trading semantics */
+  --color-trading-up: #10b981;
+  --color-trading-down: #f43f5e;
+
+  /* Info / focus */
+  --color-info: #0052ff;
+  --color-info-ring: #4d8dff;
+
+  /* Radii — sharp, as fintech deals */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 14px;
   --radius-pill: 9999px;
 
   /* Spacing (4px base) */
@@ -49,9 +59,19 @@
   --spacing-lg: 24px;
   --spacing-xl: 32px;
   --spacing-xxl: 48px;
-  --spacing-section: 80px;
+  --spacing-section: 72px;
 
-  /* Typography families (substitutes per DESIGN.md) */
-  --font-ui: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; /* BinanceNova fallback */
-  --font-number: "IBM Plex Sans", "JetBrains Mono", "Inter", sans-serif; /* BinancePlex fallback */
+  /* Typography */
+  --font-display: "Manrope", system-ui, sans-serif;
+  --font-ui: "Manrope", system-ui, sans-serif;
+  --font-number: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --display-weight: 600;
+  --display-tracking: -0.035em;
+  --display-tracking-xl: -0.045em;
+
+  /* Effects */
+  --shadow-card: 0 20px 48px -30px rgba(2, 6, 23, 0.95);
+  --shadow-soft-light: 0 16px 36px -22px rgba(15, 23, 42, 0.28);
+  --shadow-glow: 0 0 28px rgba(0, 82, 255, 0.42);
+  --transition-spring: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }

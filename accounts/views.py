@@ -10,6 +10,12 @@ from .forms import LoginForm, ProfileEditForm, RegisterForm
 User = get_user_model()
 
 
+def home_redirect(request):
+    if request.user.is_authenticated:
+        return redirect("accounts:post_login")
+    return redirect("accounts:login")
+
+
 def register_view(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
@@ -32,6 +38,7 @@ def login_view(request):
         if form.is_valid():
             email = form.cleaned_data["email"]
             password = form.cleaned_data["password"]
+            email = User.objects.filter(email__iexact=email).values_list("email", flat=True).first() or email
             user = authenticate(request, username=email, password=password)
             if user is not None:
                 login(request, user)
