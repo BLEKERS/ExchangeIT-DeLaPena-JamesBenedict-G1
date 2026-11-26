@@ -1,7 +1,5 @@
 /* ExchangeIt design tokens — dealt from the dark fintech brand: deep slate,
    electric blue, Manrope for interface, JetBrains Mono for numbers. */
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400..700&family=JetBrains+Mono:wght@400..500&display=swap');
-
 :root {
   /* Brand & accent */
   --color-primary: #0052ff;

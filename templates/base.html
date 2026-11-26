@@ -7,8 +7,9 @@
   <meta name="page-type" content="software">
   <meta name="site-kind" content="software">
   <title>{% block title %}ExchangeIt{% endblock %}</title>
-  <link rel="stylesheet" href="{% static 'css/tokens.css' %}">
-  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+  <link rel="stylesheet" href="{% static 'css/fonts.css' %}?v={% now 'U' %}">
+  <link rel="stylesheet" href="{% static 'css/tokens.css' %}?v={% now 'U' %}">
+  <link rel="stylesheet" href="{% static 'css/app.css' %}?v={% now 'U' %}">
 </head>
 <body>
   <a class="skip-link" href="#content">Skip to content</a>
