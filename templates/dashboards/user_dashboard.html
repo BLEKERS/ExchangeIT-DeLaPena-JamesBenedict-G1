@@ -23,9 +23,9 @@
       <div class="stat-label">Total Conversions</div>
       <div class="stat-figure">
         <div class="stat-value">{{ total_conversions }}</div>
-        <svg class="sparkline" viewBox="0 0 132 52" fill="none" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M1 44l18-9 18 5 18-16 18 8 18-21 18 12 18-16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M1 44l18-9 18 5 18-16 18 8 18-21 18 12 18-16v52H1z" fill="currentColor" opacity="0.09"/>
+        <svg class="sparkline" viewBox="0 0 132 52" fill="none" preserveAspectRatio="none" aria-hidden="true" data-chart="{{ chart_data|safe }}" data-labels="{{ chart_labels|join:',' }}">
+          <path id="chart-line" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path id="chart-fill" fill="currentColor" opacity="0.09"/>
         </svg>
       </div>
       <div class="stat-meta">Recorded across your account</div>
@@ -38,7 +38,7 @@
         </svg>
       </span>
       <div class="stat-label">Favorite Pairs</div>
-      <div class="stat-value">0</div>
+      <div class="stat-value">{{ total_favorites }}</div>
       <div class="stat-meta">Saved currency pairs</div>
     </div>
   </div>
@@ -57,4 +57,27 @@
     </div>
   </div>
 </div>
+
+<script>
+(function () {
+  const svg = document.querySelector('.sparkline[data-chart]');
+  if (!svg) return;
+
+  const data = JSON.parse(svg.dataset.chart);
+  const labels = svg.dataset.labels.split(',');
+  const peak = Math.max(...data);
+  const points = data.map((value, index) => {
+    const x = 1 + index * (130 / (data.length - 1));
+    const y = peak ? 48 - Math.round((value / peak) * 44) : 26;
+    return [x, y];
+  });
+  const line = points.map(([x, y], index) => `${index ? 'L' : 'M'}${x} ${y}`).join(' ');
+  svg.querySelector('#chart-line').setAttribute('d', line);
+  svg.querySelector('#chart-fill').setAttribute('d', `${line} L131 52 L1 52 Z`);
+
+  const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+  title.textContent = labels.map((label, index) => `${label}: ${data[index]}`).join(', ');
+  svg.appendChild(title);
+})();
+</script>
 {% endblock %}

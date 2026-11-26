@@ -1,8 +1,15 @@
+from datetime import timedelta
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
+from django.db.models.functions import TruncDate
 from django.shortcuts import redirect, render
+from django.utils import timezone
 from django.views.decorators.http import require_POST
+
+from converter.models import ConversionHistory, FavoritePair
 
 from .decorators import admin_required, user_required
 from .forms import LoginForm, ProfileEditForm, RegisterForm
@@ -70,7 +77,33 @@ def post_login(request):
 @login_required
 @user_required
 def user_dashboard(request):
-    return render(request, "dashboards/user_dashboard.html")
+    total_conversions = ConversionHistory.objects.filter(user=request.user).count()
+    total_favorites = FavoritePair.objects.filter(user=request.user).count()
+
+    start_date = timezone.localdate() - timedelta(days=6)
+    counts = {
+        row["day"]: row["total"]
+        for row in ConversionHistory.objects.filter(
+            user=request.user, converted_at__date__gte=start_date
+        )
+        .annotate(day=TruncDate("converted_at"))
+        .values("day")
+        .annotate(total=Count("id"))
+    }
+    days = [start_date + timedelta(days=offset) for offset in range(7)]
+    chart_data = [counts.get(day, 0) for day in days]
+    chart_labels = [day.strftime("%a") for day in days]
+
+    return render(
+        request,
+        "dashboards/user_dashboard.html",
+        {
+            "total_conversions": total_conversions,
+            "total_favorites": total_favorites,
+            "chart_data": chart_data,
+            "chart_labels": chart_labels,
+        },
+    )
 
 
 @login_required
